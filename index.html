@@ -171,7 +171,28 @@
             }
         };
 
-        window.initAppUI();
+        window.initAppUI = function() {
+            window.dbService.onAuthChange((user) => {
+                if (user) {
+                    state.currentUserId = user.uid;
+                    window.subscribeToDatabase();
+                }
+            });
+            window.dbService.signIn().catch(() => {
+                state.currentUserId = 'offline_' + Math.random().toString(36).substr(2, 9);
+                window.subscribeToDatabase();
+            });
+            const badge = document.getElementById('storage-mode-badge');
+            if (badge) {
+                if (window.dbService.isCloudMode()) {
+                    badge.textContent = "클라우드 온라인 실시간 동기화 ON";
+                    badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-emerald-500 font-bold";
+                } else {
+                    badge.textContent = "로컬 저장소 전용 모드";
+                    badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-amber-500 font-bold";
+                }
+            }
+        };
     </script>
 
     <div id="app-root" class="flex-grow flex flex-col relative overflow-x-hidden">
@@ -660,7 +681,7 @@
                 desc: `<p><strong>감천문화마을</strong>은 알록달록 알록색 도화지처럼 아름다운 산비탈 마을이에요.</p><p>아주 먼 옛날 한국전쟁 당시 피란민들이 척박한 비탈길에 힘을 모아 옹기종기 계단식 집들을 지으며 소중한 삶의 터전을 일구어 냈습니다.</p><p>지금은 예술가들의 조각상과 멋진 벽화, 그리고 마을 골목길 위를 바라보며 사막여우와 함께 여행을 기다리는 <strong>어린왕자</strong> 조각상이 세계 수많은 여행객들을 반갑게 맞이하고 있답니다.</p>`,
                 colorHex: "#f43f5e",
                 illustrations: `<rect width="100%" height="100%" fill="#fff1f2"/><text x="50%" y="45%" font-size="50" text-anchor="middle">👑</text><text x="50%" y="75%" font-size="14" fill="#be123c" font-weight="bold" text-anchor="middle">어린왕자가 바라보는 알록달록 언덕마을</text>`,
-                quiz: { question: "감천문화마을 산비탈 길목 난간에서 사막여우와 나란히 앉아 마을을 내려다보는 동화 속 주인공은 누구일까요?", options: [{ text: "어린왕자 👑", correct: true }, { text: "신데렐라 👠", correct: false }, { text: "피노키오 🤥", correct: false }] }
+                quiz: { question: "감천문화마을 산비탈 길목 난간에서 사막여우와 나란히 앉아 마을을 내려다보는 동화 속 주인공은 누구일까요?", options: [{ text: "어린왕자 👑", correct: true }, { text: "신데렐라 👑", correct: false }, { text: "피노키오 🤥", correct: false }] }
             },
             {
                 id: 2, name: "다대포해수욕장", emoji: "🌅", badge: "코스 3", color: "from-sky-500 to-blue-600",
