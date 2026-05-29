@@ -341,4 +341,665 @@
 
                             <button onclick="window.openSpot(2)" class="absolute left-[25%] top-[75%] -translate-x-1/2 -translate-y-1/2 group z-20">
                                 <span class="absolute inline-flex h-10 w-10 rounded-full bg-sky-400 opacity-30 group-hover:scale-125 transition-all duration-300 animate-ping"></span>
-                                <div
+                                <div id="pin-2" class="relative bg-white border-2 border-sky-500 rounded-2xl px-3 py-2 shadow-md hover:scale-105 transition-all flex items-center gap-2">
+                                    <span class="text-xl">🌅</span>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-sky-500 font-bold leading-none">코스 3</p>
+                                        <p class="text-xs font-bold text-slate-700">다대포</p>
+                                    </div>
+                                    <div id="pin-stamp-2" class="hidden text-amber-500"><i class="fa-solid fa-circle-check"></i></div>
+                                </div>
+                            </button>
+
+                            <button onclick="window.openSpot(3)" class="absolute left-[45%] top-[60%] -translate-x-1/2 -translate-y-1/2 group z-20">
+                                <span class="absolute inline-flex h-10 w-10 rounded-full bg-amber-400 opacity-30 group-hover:scale-125 transition-all duration-300 animate-ping"></span>
+                                <div id="pin-3" class="relative bg-white border-2 border-amber-500 rounded-2xl px-3 py-2 shadow-md hover:scale-105 transition-all flex items-center gap-2">
+                                    <span class="text-xl">🔭</span>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-amber-500 font-bold leading-none">코스 4</p>
+                                        <p class="text-xs font-bold text-slate-700">아미산전망대</p>
+                                    </div>
+                                    <div id="pin-stamp-3" class="hidden text-amber-500"><i class="fa-solid fa-circle-check"></i></div>
+                                </div>
+                            </button>
+
+                            <button onclick="window.openSpot(4)" class="absolute left-[65%] top-[50%] -translate-x-1/2 -translate-y-1/2 group z-20">
+                                <span class="absolute inline-flex h-10 w-10 rounded-full bg-violet-400 opacity-30 group-hover:scale-125 transition-all duration-300 animate-ping"></span>
+                                <div id="pin-4" class="relative bg-white border-2 border-violet-500 rounded-2xl px-3 py-2 shadow-md hover:scale-105 transition-all flex items-center gap-2">
+                                    <span class="text-xl">⛵</span>
+                                    <div class="text-left">
+                                        <p class="text-[10px] text-violet-500 font-bold leading-none">코스 5</p>
+                                        <p class="text-xs font-bold text-slate-700">장림포구</p>
+                                    </div>
+                                    <div id="pin-stamp-4" class="hidden text-amber-500"><i class="fa-solid fa-circle-check"></i></div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="mt-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4 border border-amber-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+                            <div class="flex items-center gap-3">
+                                <span class="text-3xl">🃏</span>
+                                <div class="text-left">
+                                    <h4 class="font-bold text-amber-800 text-sm">재미있는 기억력 매칭 게임!</h4>
+                                    <p class="text-xs text-amber-600">사하구 명소 카드를 뒤집어 짝을 맞추고 추가 점수를 획득하세요!</p>
+                                </div>
+                            </div>
+                            <button onclick="window.openMatchingGame()" class="w-full sm:w-auto px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-jua rounded-xl shadow-sm hover:shadow transition">
+                                카드 게임 시작하기 🎮
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/3 flex flex-col gap-6">
+                    <div class="bg-sky-50 border border-sky-100 p-5 rounded-3xl flex items-start gap-4">
+                        <div class="w-14 h-14 shrink-0 mascot-bounce">
+                            <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow">
+                                <circle cx="50" cy="50" r="45" fill="#ffffff" stroke="#bae6fd" stroke-width="2"/>
+                                <path d="M 35,65 C 45,65 55,60 65,45 C 75,30 75,20 70,20 C 65,20 62,35 55,45 C 48,55 35,55 30,58 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                                <polygon points="70,20 75,23 70,26" fill="#f97316"/>
+                                <circle cx="65" cy="25" r="2.5" fill="#1e293b"/>
+                            </svg>
+                        </div>
+                        <div class="text-left flex-grow">
+                            <h4 class="font-bold text-sky-800 text-sm mb-1">고니의 친절한 팁 💡</h4>
+                            <p class="text-xs text-sky-600 leading-relaxed" id="goni-bubble-text">
+                                지도의 대형 핀을 눌러봐! 사하구의 특별한 장소들에 숨겨진 아름답고 유익한 이야기들이 너를 기다리고 있단다!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/85 backdrop-blur-md rounded-3xl p-6 shadow-sm border border-slate-100 flex-grow flex flex-col min-h-[350px]">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-jua text-xl text-slate-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-ranking-star text-amber-500"></i>
+                                <span>실시간 리더보드</span>
+                            </h3>
+                            <span class="text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">실시간 동기화</span>
+                        </div>
+                        
+                        <div class="flex-grow overflow-y-auto space-y-2.5 max-h-[400px] pr-1" id="leaderboard-list">
+                            <div class="text-center py-10 text-slate-400 text-xs">
+                                <i class="fa-solid fa-spinner animate-spin text-lg mb-2"></i>
+                                <p>순위 정보를 실시간으로 수신하는 중...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-spot" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] transition-transform duration-300 scale-95" id="modal-spot-card">
+            <div id="modal-spot-header" class="p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span id="modal-spot-emoji" class="text-3xl">🏞️</span>
+                    <div>
+                        <span id="modal-spot-badge" class="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">코스 1</span>
+                        <h3 id="modal-spot-title" class="font-jua text-2xl tracking-wide">을숙도 탐험</h3>
+                    </div>
+                </div>
+                <button onclick="window.closeSpotModal()" class="bg-black/10 hover:bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 flex-grow text-left">
+                <div id="spot-content-section" class="space-y-4">
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex gap-4 items-center">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">고니의 명소 해설 들으러 가기</h4>
+                            <p class="text-xs text-slate-500">우측 재생 버튼을 클릭하면 고니가 내용을 직접 들려줍니다.</p>
+                        </div>
+                        <button id="btn-tts" onclick="window.toggleTTS()" class="w-12 h-12 bg-sky-500 hover:bg-sky-600 text-white rounded-full flex items-center justify-center text-xl shadow-md transition transform active:scale-95">
+                            <i id="tts-icon" class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+
+                    <div id="tts-wave-container" class="hidden h-10 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center gap-1">
+                        <span class="wave-bar w-1.5 bg-sky-500 rounded-full"></span>
+                        <span class="wave-bar w-1.5 bg-sky-500 rounded-full"></span>
+                        <span class="wave-bar w-1.5 bg-sky-500 rounded-full"></span>
+                        <span class="wave-bar w-1.5 bg-sky-500 rounded-full"></span>
+                        <span class="wave-bar w-1.5 bg-sky-500 rounded-full"></span>
+                        <span class="text-xs text-sky-700 font-bold ml-2">고니가 해설을 설명하는 중입니다...</span>
+                    </div>
+
+                    <div id="spot-illustration" class="w-full h-48 rounded-2xl flex items-center justify-center relative overflow-hidden select-none"></div>
+                    <div id="spot-desc" class="text-slate-600 text-sm leading-relaxed space-y-3 font-medium"></div>
+
+                    <div class="pt-4 border-t border-slate-100 flex gap-3">
+                        <button onclick="window.startQuiz()" class="flex-grow py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-jua text-xl rounded-xl shadow-md transition transform active:scale-[0.98]">
+                            골든벨 퀴즈 도전하기! 🔔
+                        </button>
+                    </div>
+                </div>
+
+                <div id="spot-quiz-section" class="hidden space-y-6">
+                    <div class="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex gap-3 items-start">
+                        <span class="text-2xl">🔔</span>
+                        <div>
+                            <h4 class="font-bold text-amber-800 text-sm">골든벨을 울려라!</h4>
+                            <p class="text-xs text-amber-600">내용을 기억하여 정답을 고르면 명예 스탬프를 획득할 수 있어요!</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 id="quiz-question" class="font-jua text-2xl text-slate-800 leading-normal">질문이 로딩 중입니다...</h3>
+                        <div class="grid grid-cols-1 gap-3" id="quiz-options-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-game" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[95vh] transition-transform duration-300 scale-95" id="modal-game-card">
+            <div class="p-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🃏</span>
+                    <div>
+                        <h3 class="font-jua text-2xl tracking-wide">기억력 매칭 게임</h3>
+                        <p class="text-xs text-white/80">같은 카드 짝을 맞추어 보너스 점수 10점을 따보세요!</p>
+                    </div>
+                </div>
+                <button onclick="window.closeGameModal()" class="bg-black/10 hover:bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="px-6 py-3 bg-amber-50 border-b border-amber-100 flex justify-between text-xs font-bold text-amber-800">
+                <span id="game-moves">시도 횟수: 0회</span>
+                <span id="game-matches">맞춘 카드: 0/6 짝</span>
+            </div>
+            <div class="p-6 bg-slate-50 flex-grow overflow-y-auto">
+                <div class="grid grid-cols-3 gap-3.5 max-w-sm mx-auto" id="game-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-alert" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100 transform scale-95 transition-all duration-200">
+            <div class="w-16 h-16 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-3xl mb-4" id="alert-icon-wrapper">📢</div>
+            <h3 class="font-jua text-xl text-slate-800 mb-2" id="alert-title">알림</h3>
+            <p class="text-sm text-slate-500 leading-relaxed mb-6" id="alert-message">메시지 내용</p>
+            <div class="flex gap-3 justify-center" id="alert-action-buttons"></div>
+        </div>
+    </div>
+
+    <div id="modal-lms-login" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center">
+            <div class="w-12 h-12 mx-auto bg-sky-100 text-sky-600 rounded-full flex items-center justify-center text-xl mb-4">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="font-jua text-xl text-slate-800 mb-2">교사 전용인증</h3>
+            <p class="text-xs text-slate-400 leading-normal mb-5">
+                학생 진도 현황 및 LMS 대시보드를 열려면 비밀번호를 입력해 주세요.<br>
+                <span class="text-sky-500 font-semibold">(초기 비밀번호: 3333)</span>
+            </p>
+            <div class="space-y-4">
+                <input type="password" id="lms-password-input" placeholder="비밀번호 입력" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-center font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <div class="flex gap-2">
+                    <button onclick="window.closeLmsLogin()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-500 font-bold rounded-xl transition">취소</button>
+                    <button onclick="window.verifyLmsPassword()" class="flex-1 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl transition shadow">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-lms-dashboard" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-50 rounded-3xl max-w-5xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col h-[90vh]">
+            <div class="bg-slate-900 text-white p-6 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-sky-500 text-white rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-jua text-2xl">사하구 탐험대 실시간 학습현황 (LMS)</h3>
+                        <p class="text-xs text-slate-400">학생들의 진행률, 퀴즈 점수 및 수료 상황을 실시간 모니터링합니다.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <select id="lms-filter-class" onchange="window.renderLmsTable()" class="bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 outline-none">
+                        <option value="전체">전체 학급 보기</option>
+                        <option value="3학년 1반">3학년 1반</option>
+                        <option value="3학년 2반">3학년 2반</option>
+                        <option value="3학년 3반">3학년 3반</option>
+                        <option value="3학년 4반">3학년 4반</option>
+                        <option value="3학년 5반">3학년 5반</option>
+                        <option value="3학년 6반">3학년 6반</option>
+                    </select>
+                    <button onclick="window.closeLmsDashboard()" class="bg-slate-800 hover:bg-slate-700 w-9 h-9 rounded-full flex items-center justify-center transition text-white">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4 shrink-0 bg-white border-b border-slate-100">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left">
+                    <p class="text-xs font-bold text-slate-400">참여 학생 수</p>
+                    <h4 class="font-jua text-3xl text-slate-700 mt-1" id="lms-stat-total">0명</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left">
+                    <p class="text-xs font-bold text-slate-400">평균 학습 점수</p>
+                    <h4 class="font-jua text-3xl text-sky-600 mt-1" id="lms-stat-avg-score">0점</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left">
+                    <p class="text-xs font-bold text-slate-400">평균 획득 스탬프</p>
+                    <h4 class="font-jua text-3xl text-emerald-600 mt-1" id="lms-stat-avg-stamps">0개</h4>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left">
+                    <p class="text-xs font-bold text-slate-400">최종 수료자 수</p>
+                    <h4 class="font-jua text-3xl text-amber-500 mt-1" id="lms-stat-completed">0명</h4>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow overflow-y-auto">
+                <div class="bg-white rounded-2xl border border-slate-150 overflow-hidden shadow-sm">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-400 text-xs font-bold border-b border-slate-100">
+                                <th class="p-4">소속 학교</th>
+                                <th class="p-4">반</th>
+                                <th class="p-4">이름</th>
+                                <th class="p-4 text-center">누적 점수</th>
+                                <th class="p-4 text-center">획득 스탬프 (5개)</th>
+                                <th class="p-4 text-center">수료증 발급</th>
+                                <th class="p-4 text-center">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lms-student-tbody" class="text-sm divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-certificate" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
+            <div class="p-4 bg-slate-100 flex justify-between items-center border-b border-slate-200">
+                <span class="text-sm font-bold text-slate-600">📜 사하구 명예 탐험가 수료증</span>
+                <button onclick="window.closeCertificate()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-8 flex-grow overflow-y-auto bg-amber-50/20">
+                <div id="certificate-print-area" class="bg-white border-8 border-amber-500/80 p-8 rounded-2xl relative text-center shadow-lg max-w-lg mx-auto select-text">
+                    <div class="absolute inset-2 border-2 border-amber-200/50 rounded-lg pointer-events-none"></div>
+                    <div class="w-16 h-16 mx-auto mb-4 text-amber-500">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <circle cx="50" cy="50" r="30" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+                            <path d="M 40,50 L 47,57 L 62,42" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="font-jua text-4xl text-amber-600 mb-6 tracking-widest">수 료 증</h2>
+                    
+                    <div class="space-y-6 text-slate-700 text-left px-4">
+                        <p class="text-md flex justify-between border-b border-slate-100 pb-2">
+                            <span class="font-bold">성 명: <span class="text-slate-900" id="cert-name">홍길동</span></span>
+                            <span class="font-bold">소 속: <span class="text-slate-900" id="cert-school">다대초등학교 3-1</span></span>
+                        </p>
+                        <p class="text-sm leading-relaxed text-center py-6 text-slate-600 font-medium">
+                            위 학생은 사하구의 역사, 문화, 생태계를 깊이 탐구하는 <br>
+                            <span class="font-bold text-sky-600">「날아라 고니! 사하 탐험대」</span>의 모든 교육 코스를 <br>
+                            우수하게 마쳤으며, 퀴즈와 도전 미션을 훌륭하게 완수하였으므로 <br>
+                            사하구 명예 어린이 탐험가로 임명하여 이 증서를 수여합니다.
+                        </p>
+                    </div>
+
+                    <div class="mt-10 mb-4 text-center">
+                        <p class="text-sm font-bold text-slate-500" id="cert-date">2026년 5월 29일</p>
+                        <h4 class="font-jua text-2xl text-slate-800 mt-4 tracking-wider flex items-center justify-center gap-3">
+                            <span>사하구 탐험대장 고니</span>
+                            <span class="w-12 h-12 rounded-full border-2 border-red-500/80 flex items-center justify-center text-red-500 text-[10px] font-bold tracking-tighter transform rotate-12 bg-red-50/50 font-jua">사하탐험인</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex gap-3">
+                <button onclick="window.printCertificate()" class="flex-1 py-3 bg-sky-500 hover:bg-sky-600 text-white font-jua text-lg rounded-xl shadow-md flex items-center justify-center gap-2 transition transform active:scale-95">
+                    <i class="fa-solid fa-print"></i>
+                    <span>종이로 인쇄하기</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SPOTS_DB = [
+            {
+                id: 0, name: "을숙도", emoji: "🦆", badge: "코스 1", color: "from-emerald-500 to-green-600",
+                desc: `<p><strong>을숙도</strong>는 낙동강과 바다가 만나는 자리에 모래가 쌓여 만들어진 아주 넓고 비옥한 섬이에요.</p><p>이곳은 갈대밭과 풍부한 생태계 덕분에 세계적으로 귀한 다양한 <strong>겨울철새</strong>들이 찾아와 겨울을 보내는 보금자리랍니다. 매년 겨울이 되면 천연기념물로 지정된 커다란 <strong>고니(백조)</strong> 🦢 무리와 여러 물새 친구들이 먹이를 구하러 오지요.</p>`,
+                colorHex: "#10b981",
+                illustrations: `<rect width="100%" height="100%" fill="#ecfdf5"/><text x="50%" y="45%" font-size="60" text-anchor="middle">🦆</text><text x="50%" y="75%" font-size="14" fill="#047857" font-weight="bold" text-anchor="middle">갈대와 철새들의 아름다운 천국</text>`,
+                quiz: { question: "을숙도는 낙동강과 바다가 만나는 섬이에요. 이곳에 겨울마다 찾아오는 특별하고 귀한 천연기념물 친구들은 무엇일까요?", options: [{ text: "아프리카 사자 🦁", correct: false }, { text: "겨울 철새 고니 🦆", correct: true }, { text: "사막 여우 🦊", correct: false }] }
+            },
+            {
+                id: 1, name: "감천문화마을", emoji: "🏡", badge: "코스 2", color: "from-rose-500 to-red-600",
+                desc: `<p><strong>감천문화마을</strong>은 알록달록 알록색 도화지처럼 아름다운 산비탈 마을이에요.</p><p>아주 먼 옛날 한국전쟁 당시 피란민들이 척박한 비탈길에 힘을 모아 옹기종기 계단식 집들을 지으며 소중한 삶의 터전을 일구어 냈습니다.</p><p>지금은 예술가들의 조각상과 멋진 벽화, 그리고 마을 골목길 위를 바라보며 사막여우와 함께 여행을 기다리는 <strong>어린왕자</strong> 조각상이 세계 수많은 여행객들을 반갑게 맞이하고 있답니다.</p>`,
+                colorHex: "#f43f5e",
+                illustrations: `<rect width="100%" height="100%" fill="#fff1f2"/><text x="50%" y="45%" font-size="50" text-anchor="middle">👑</text><text x="50%" y="75%" font-size="14" fill="#be123c" font-weight="bold" text-anchor="middle">어린왕자가 바라보는 알록달록 언덕마을</text>`,
+                quiz: { question: "감천문화마을 산비탈 길목 난간에서 사막여우와 나란히 앉아 마을을 내려다보는 동화 속 주인공은 누구일까요?", options: [{ text: "어린왕자 👑", correct: true }, { text: "신데렐라 👠", correct: false }, { text: "피노키오 🤥", correct: false }] }
+            },
+            {
+                id: 2, name: "다대포해수욕장", emoji: "🌅", badge: "코스 3", color: "from-sky-500 to-blue-600",
+                desc: `<p><strong>다대포해수욕장</strong>은 부드럽고 끝없는 은빛 모래사장과 함께 저녁 노을이 가장 찬란한 바다예요.</p><p>밀물과 썰물 때 넓은 갯벌 생태 체험장이 열려 게와 조개 관찰이 가능해요.</p><p>특히 여름과 가을 저녁이 되면 세계에서 제일 큰 거대한 물줄기가 멋진 음악에 맞추어 오색 조명 빛을 뿜어대며 춤을 추는 <strong>꿈의 낙조분수</strong>가 펼쳐져 환상적인 볼거리를 안겨준답니다.</p>`,
+                colorHex: "#0ea5e9",
+                illustrations: `<rect width="100%" height="100%" fill="#f0f9ff"/><text x="50%" y="45%" font-size="50" text-anchor="middle">⛲</text><text x="50%" y="75%" font-size="14" fill="#0369a1" font-weight="bold" text-anchor="middle">음악에 맞춰 춤추는 거대한 낙조분수</text>`,
+                quiz: { question: "다대포에서 음악과 아름다운 LED 조명에 맞춰 엄청난 높이의 물줄기가 뿜어 나오는 유명한 구경거리는 무엇일까요?", options: [{ text: "얼음 썰매장 ❄️", correct: false }, { text: "워터 슬라이드 🏊", correct: false }, { text: "꿈의 낙조분수 ⛲", correct: true }] }
+            },
+            {
+                id: 3, name: "아미산 전망대", emoji: "🔭", badge: "코스 4", color: "from-amber-500 to-yellow-600",
+                desc: `<p><strong>아미산 전망대</strong>는 낙동강 강물과 푸른 남해 바다가 한데 어우러지는 사하구 최고의 비경 지대입니다.</p><p>이곳에 서면 강물이 모래를 싣고 와 만들어낸 모래섬인 <strong>연안사주(도요등, 백합등)</strong>의 독특한 비경을 한눈에 내려다볼 수 있습니다.</p>`,
+                colorHex: "#f59e0b",
+                illustrations: `<rect width="100%" height="100%" fill="#fef3c7"/><text x="50%" y="45%" font-size="50" text-anchor="middle">🔭</text><text x="50%" y="75%" font-size="14" fill="#b45309" font-weight="bold" text-anchor="middle">낙동강의 모래섬과 해넘이가 만나는 창문</text>`,
+                quiz: { question: "아미산 전망대에서 한눈에 감상할 수 있는 신비로운 모래섬들의 정식 이름은 무엇일까요?", options: [{ text: "화산 폭발 구덩이 🌋", correct: false }, { text: "강물이 흙을 밀어와 만든 연안사주(모래섬) 🏝️", correct: true }, { text: "신비한 산호초 벽 🪸", correct: false }] }
+            },
+            {
+                id: 4, name: "장림포구", emoji: "⛵", badge: "코스 5", color: "from-violet-500 to-purple-600",
+                desc: `<p><strong>장림포구</strong>는 물길을 따라 알록달록 색감의 지붕 창고와 작은 선박들이 옹기종기 정박한 평화로운 항구입니다.</p><p>이곳의 이국적인 항구 정경이 마치 물의 도시 이탈리아 베네치아의 무라노 섬을 닮았다고 하여 시민들 사이에서 <strong>'부네치아'</strong>라는 귀여운 별명으로 불리고 있습니다.</p>`,
+                colorHex: "#8b5cf6",
+                illustrations: `<rect width="100%" height="100%" fill="#f5f3ff"/><text x="50%" y="45%" font-size="45" text-anchor="middle">⛵</text><text x="50%" y="75%" font-size="14" fill="#6d28d9" font-weight="bold" text-anchor="middle">이국적인 풍경을 담은 부산의 부네치아</text>`,
+                quiz: { question: "장림포구는 알록달록 지붕 창고와 이국적인 포구 물길 덕분에 생겨난 재미있는 별명이 무엇일까요?", options: [{ text: "부산의 베네치아인 '부네치아' ⛵", correct: true }, { text: "사하 뉴욕 광장 🗽", correct: false }, { text: "만리장성 수변 공원 🧱", correct: false }] }
+            }
+        ];
+
+        const GAME_CARDS_RAW = ["🦆", "🏡", "🌅", "🔭", "⛵", "🦢"];
+
+        let state = {
+            currentUserId: null,
+            studentInfo: { school: "", classGrade: "", name: "", stamps: [false, false, false, false, false], score: 0, certIssued: false, lastUpdated: "" },
+            allStudentsList: [], currentSpotIndex: null, speechUtterance: null, isSpeaking: false,
+            game: { cards: [], flippedIndices: [], matchedPairs: 0, moves: 0, isLock: false }
+        };
+
+        window.subscribeToDatabase = function() {
+            if (!state.currentUserId) return;
+            window.dbService.listenToAllStudents((students) => {
+                state.allStudentsList = students;
+                const cloud = students.find(s => s.uid === state.currentUserId);
+                if (cloud) {
+                    state.studentInfo = { school: cloud.school||"", classGrade: cloud.classGrade||"", name: cloud.name||"", stamps: cloud.stamps||[false,false,false,false,false], score: cloud.score||0, certIssued: cloud.certIssued||false, lastUpdated: cloud.lastUpdated||"" };
+                    window.showView('view-dashboard');
+                    window.updateHeaderUI(); window.updateProgressUI(); window.updatePinsUI();
+                } else {
+                    const savedName = localStorage.getItem('saha_student_name');
+                    if (savedName) {
+                        state.studentInfo = { school: localStorage.getItem('saha_student_school')||"", classGrade: localStorage.getItem('saha_student_class')||"", name: savedName, stamps: JSON.parse(localStorage.getItem('saha_student_stamps'))||[false,false,false,false,false], score: parseInt(localStorage.getItem('saha_student_score'))||0, certIssued: localStorage.getItem('saha_student_cert')==='true', lastUpdated: "" };
+                        window.saveMyDataToCloud();
+                    } else { window.showView('view-onboarding'); }
+                }
+                window.renderLeaderboard(); window.renderLmsTable();
+            });
+        };
+
+        window.saveMyDataToCloud = function() {
+            if (!state.currentUserId) return;
+            state.studentInfo.lastUpdated = new Date().toLocaleString();
+            localStorage.setItem('saha_student_school', state.studentInfo.school);
+            localStorage.setItem('saha_student_class', state.studentInfo.classGrade);
+            localStorage.setItem('saha_student_name', state.studentInfo.name);
+            localStorage.setItem('saha_student_stamps', JSON.stringify(state.studentInfo.stamps));
+            localStorage.setItem('saha_student_score', state.studentInfo.score);
+            localStorage.setItem('saha_student_cert', state.studentInfo.certIssued);
+            window.dbService.saveStudentProgress(state.currentUserId, state.studentInfo);
+        };
+
+        window.showView = function(viewId) {
+            document.getElementById('view-onboarding').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+        };
+
+        window.handleRegister = function(event) {
+            event.preventDefault();
+            const school = document.getElementById('reg-school').value.trim();
+            const classGrade = document.getElementById('reg-class').value;
+            const name = document.getElementById('reg-name').value.trim();
+            state.studentInfo = { school, classGrade, name, stamps: [false,false,false,false,false], score: 0, certIssued: false, lastUpdated: new Date().toLocaleString() };
+            window.saveMyDataToCloud();
+            window.showCustomAlert("🎒 탐험 등록 완료!", `${name} 탐험가님 반가워요! 지도의 핀을 눌러 출발해 보세요!`, "success");
+        };
+
+        window.updateHeaderUI = function() {
+            document.getElementById('header-user-name').textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade} ${state.studentInfo.name}`;
+            document.getElementById('header-user-stats').textContent = `스탬프 ${state.studentInfo.stamps.filter(Boolean).length}개 • ${state.studentInfo.score}점`;
+        };
+
+        window.updateProgressUI = function() {
+            const count = state.studentInfo.stamps.filter(Boolean).length;
+            document.getElementById('progress-percent').textContent = `진행률 ${count*20}%`;
+            document.getElementById('progress-stamps').textContent = `스탬프 ${count}/5개`;
+            document.getElementById('progress-bar').style.width = `${count*20}%`;
+            const btn = document.getElementById('btn-show-certificate');
+            if(count === 5) {
+                btn.disabled = false;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 cursor-pointer shadow-md";
+            } else {
+                btn.disabled = true;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-slate-300 cursor-not-allowed";
+            }
+        };
+
+        window.updatePinsUI = function() {
+            state.studentInfo.stamps.forEach((st, i) => {
+                const badge = document.getElementById(`pin-stamp-${i}`);
+                if(badge) { st ? badge.classList.remove('hidden') : badge.classList.add('hidden'); }
+            });
+        };
+
+        window.renderLeaderboard = function() {
+            const container = document.getElementById('leaderboard-list');
+            if (!container) return;
+            const sorted = [...state.allStudentsList].sort((a,b) => (b.score||0) - (a.score||0));
+            if(sorted.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">아직 기록이 없어요!</div>`;
+                return;
+            }
+            container.innerHTML = sorted.slice(0, 10).map((st, i) => {
+                const isMe = st.uid === state.currentUserId;
+                return `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl border ${isMe ? 'bg-sky-50 border-sky-300' : 'bg-white border-slate-100'} text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-400 w-4">${i+1}</span>
+                            <div class="text-left">
+                                <p class="font-bold text-slate-700">${st.name||"탐험가"} ${isMe?'(나)':''}</p>
+                                <p class="text-[10px] text-slate-400">${st.school||""} ${st.classGrade||""}</p>
+                            </div>
+                        </div>
+                        <p class="font-jua text-sky-600 font-bold">${st.score||0}점</p>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.openSpot = function(idx) {
+            state.currentSpotIndex = idx;
+            const spot = SPOTS_DB[idx];
+            document.getElementById('modal-spot-badge').textContent = spot.badge;
+            document.getElementById('modal-spot-title').textContent = `${spot.name} 탐험`;
+            document.getElementById('modal-spot-emoji').textContent = spot.emoji;
+            document.getElementById('modal-spot-desc').innerHTML = spot.desc;
+            document.getElementById('modal-spot-header').className = `p-6 text-white flex justify-between items-center bg-gradient-to-r ${spot.color}`;
+            document.getElementById('spot-illustration').innerHTML = `<svg viewBox="0 0 300 150" class="w-full h-full">${spot.illustrations}</svg>`;
+            document.getElementById('spot-content-section').classList.remove('hidden');
+            document.getElementById('spot-quiz-section').classList.add('hidden');
+            window.stopTTS();
+            const modal = document.getElementById('modal-spot');
+            modal.classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-spot-card').classList.remove('scale-95'), 10);
+        };
+
+        window.closeSpotModal = function() {
+            window.stopTTS();
+            document.getElementById('modal-spot-card').classList.add('scale-95');
+            setTimeout(() => document.getElementById('modal-spot').classList.add('hidden'), 150);
+        };
+
+        window.toggleTTS = function() { state.isSpeaking ? window.stopTTS() : window.startTTS(); };
+        window.startTTS = function() {
+            if (!('speechSynthesis' in window)) return;
+            window.stopTTS();
+            const div = document.createElement('div'); div.innerHTML = SPOTS_DB[state.currentSpotIndex].desc;
+            state.speechUtterance = new SpeechSynthesisUtterance(div.innerText);
+            state.speechUtterance.lang = 'ko-KR';
+            state.speechUtterance.onstart = () => {
+                state.isSpeaking = true;
+                document.getElementById('tts-icon').className = "fa-solid fa-square-stop";
+                document.getElementById('tts-wave-container').classList.remove('hidden');
+            };
+            state.speechUtterance.onend = () => window.stopTTS();
+            window.speechSynthesis.speak(state.speechUtterance);
+        };
+        window.stopTTS = function() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            state.isSpeaking = false;
+            document.getElementById('tts-icon').className = "fa-solid fa-volume-high";
+            const wave = document.getElementById('tts-wave-container');
+            if(wave) wave.classList.add('hidden');
+        };
+
+        window.startQuiz = function() {
+            if (state.studentInfo.stamps[state.currentSpotIndex]) {
+                window.showCustomAlert("💮 완료 코스", "이미 골든벨을 울려 스탬프를 가방에 넣은 명소입니다!", "success");
+                return;
+            }
+            const quiz = SPOTS_DB[state.currentSpotIndex].quiz;
+            document.getElementById('quiz-question').textContent = quiz.question;
+            document.getElementById('quiz-options-container').innerHTML = quiz.options.map((opt) => `
+                <button onclick="window.selectQuizAnswer(${opt.correct})" class="w-full p-3.5 text-left border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 rounded-xl font-semibold text-slate-700 transition">
+                    ${opt.text}
+                </button>
+            `).join('');
+            document.getElementById('spot-content-section').classList.add('hidden');
+            document.getElementById('spot-quiz-section').classList.remove('hidden');
+        };
+
+        window.selectQuizAnswer = function(isCorrect) {
+            if (isCorrect) {
+                state.studentInfo.stamps[state.currentSpotIndex] = true;
+                state.studentInfo.score += 20;
+                window.saveMyDataToCloud();
+                confetti({ particleCount: 80, spread: 60 });
+                window.showCustomAlert("🔔 정답입니다!", "딩동댕! <strong>20점</strong>을 얻고 멋진 상징 스탬프를 획득했습니다!", "success", () => window.closeSpotModal());
+            } else {
+                window.showCustomAlert("😢 아쉬워요", "틀렸습니다! 해설 내용을 기억하여 다시 한번 도전해 보세요!", "error");
+            }
+        };
+
+        window.openMatchingGame = function() {
+            let pool = [...GAME_CARDS_RAW, ...GAME_CARDS_RAW].sort(() => Math.random() - 0.5);
+            state.game = { cards: pool.map(emoji => ({ emoji, isFlipped: false, isMatched: false })), flippedIndices: [], matchedPairs: 0, moves: 0, isLock: false };
+            window.renderGameGrid();
+            document.getElementById('modal-game').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-game-card').classList.remove('scale-95'), 10);
+        };
+        window.closeGameModal = function() {
+            document.getElementById('modal-game-card').classList.add('scale-95');
+            setTimeout(() => document.getElementById('modal-game').classList.add('hidden'), 150);
+        };
+        window.renderGameGrid = function() {
+            document.getElementById('game-moves').textContent = `시도 횟수: ${state.game.moves}회`;
+            document.getElementById('game-matches').textContent = `맞춘 카드: ${state.game.matchedPairs}/6 짝`;
+            document.getElementById('game-grid').innerHTML = state.game.cards.map((card, idx) => {
+                const show = card.isFlipped || card.isMatched;
+                return `
+                    <button onclick="window.handleCardClick(${idx})" class="aspect-square rounded-xl flex items-center justify-center text-2xl border ${show ? 'bg-white border-amber-400' : 'bg-gradient-to-br from-amber-400 to-orange-400 text-white font-bold'}">
+                        ${show ? card.emoji : '?'}
+                    </button>
+                `;
+            }).join('');
+        };
+        window.handleCardClick = function(idx) {
+            const g = state.game; if (g.isLock || g.cards[idx].isFlipped || g.cards[idx].isMatched) return;
+            g.cards[idx].isFlipped = true; g.flippedIndices.push(idx); window.renderGameGrid();
+            if (g.flippedIndices.length === 2) {
+                g.moves++; g.isLock = true;
+                const [i1, i2] = g.flippedIndices;
+                if (g.cards[i1].emoji === g.cards[i2].emoji) {
+                    g.cards[i1].isMatched = g.cards[i2].isMatched = true; g.matchedPairs++; g.flippedIndices = []; g.isLock = false; window.renderGameGrid();
+                    if (g.matchedPairs === 6) {
+                        state.studentInfo.score += 10; window.saveMyDataToCloud();
+                        window.showCustomAlert("🏆 대단해요!", "카드 짝을 모두 맞춰 보너스 <strong>10점</strong>을 획득했습니다!", "success", () => window.closeGameModal());
+                    }
+                } else {
+                    setTimeout(() => { g.cards[i1].isFlipped = g.cards[i2].isFlipped = false; g.flippedIndices = []; g.isLock = false; window.renderGameGrid(); }, 1000);
+                }
+            }
+        };
+
+        window.showCustomAlert = function(title, msg, type="info", cb=null) {
+            document.getElementById('alert-title').innerHTML = title;
+            document.getElementById('alert-message').innerHTML = msg;
+            const wrap = document.getElementById('alert-icon-wrapper');
+            wrap.innerHTML = type==="success"?"🎉":type==="error"?"⚠️":"📢";
+            wrap.className = `w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 ${type==='success'?'bg-emerald-50 text-emerald-500':type==='error'?'bg-rose-50 text-rose-500':'bg-sky-50 text-sky-500'}`;
+            const container = document.getElementById('alert-action-buttons');
+            container.innerHTML = `<button id="alert-btn-ok" class="px-6 py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md">확인</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
+            const handler = () => { modal.classList.add('hidden'); if(cb) cb(); document.getElementById('alert-btn-ok').removeEventListener('click', handler); };
+            document.getElementById('alert-btn-ok').addEventListener('click', handler);
+        };
+
+        window.openLmsLogin = function() { document.getElementById('lms-password-input').value = ""; document.getElementById('modal-lms-login').classList.remove('hidden'); };
+        window.closeLmsLogin = function() { document.getElementById('modal-lms-login').classList.add('hidden'); };
+        window.verifyLmsPassword = function() {
+            if (document.getElementById('lms-password-input').value === "3333") { window.closeLmsLogin(); window.openLmsDashboard(); }
+            else { window.showCustomAlert("🔐 오류", "선생님 비밀번호가 다릅니다.", "error"); }
+        };
+        window.openLmsDashboard = function() { window.renderLmsTable(); document.getElementById('modal-lms-dashboard').classList.remove('hidden'); };
+        window.closeLmsDashboard = function() { document.getElementById('modal-lms-dashboard').classList.add('hidden'); };
+
+        window.renderLmsTable = function() {
+            const filter = document.getElementById('lms-filter-class').value;
+            let list = [...state.allStudentsList];
+            if (filter !== "전체") list = list.filter(s => s.classGrade === filter);
+            
+            document.getElementById('lms-stat-total').textContent = `${list.length}명`;
+            const avg = list.length > 0 ? Math.round(list.reduce((acc, s) => acc + (s.score||0), 0) / list.length) : 0;
+            document.getElementById('lms-stat-avg-score').textContent = `${avg}점`;
+            
+            document.getElementById('lms-student-tbody').innerHTML = list.map(s => {
+                const count = (s.stamps||[]).filter(Boolean).length;
+                return `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100 text-xs">
+                        <td class="p-3">${s.school||""}</td><td class="p-3">${s.classGrade||""}</td><td class="p-3 font-bold">${s.name||""}</td>
+                        <td class="p-3 text-center text-sky-600 font-bold">${s.score||0}점</td><td class="p-3 text-center">🏵️ ${count}/5개</td>
+                        <td class="p-3 text-center">${count===5?'👑 수료완료':'탐험중'}</td>
+                        <td class="p-3 text-center"><button onclick="window.lmsReset('${s.uid}', '${s.name}')" class="px-2 py-1 text-rose-600 border border-rose-100 rounded bg-rose-50 font-bold">리셋</button></td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        window.lmsReset = function(uid, name) {
+            document.getElementById('alert-title').innerHTML = "⚙️ 상태 리셋";
+            document.getElementById('alert-message').innerHTML = `<strong>${name}</strong> 학생의 기록을 정말 초기화할까요?`;
+            const wrap = document.getElementById('alert-icon-wrapper'); wrap.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-rose-50 text-rose-500"; wrap.innerHTML = "♻️";
+            const container = document.getElementById('alert-action-buttons');
+            container.innerHTML = `<button id="alert-btn-cnl" class="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-xl">취소</button><button id="alert-btn-ok" class="px-4 py-2 bg-rose-500 text-white font-bold rounded-xl">리셋</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
+            
+            const close = () => modal.classList.add('hidden');
+            document.getElementById('alert-btn-cnl').onclick = close;
+            document.getElementById('alert-btn-ok').onclick = () => { close(); window.dbService.deleteStudent(uid).then(() => window.renderLmsTable()); };
+        };
+
+        window.openCertificate = function() {
+            document.getElementById('cert-name').textContent = state.studentInfo.name;
+            document.getElementById('cert-school').textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade}`;
+            const t = new Date(); document.getElementById('cert-date').textContent = `${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;
+            state.studentInfo.certIssued = true; window.saveMyDataToCloud();
+            document.getElementById('modal-certificate').classList.remove('hidden');
+        };
+        window.closeCertificate = function() { document.getElementById('modal-certificate').classList.add('hidden'); };
+        window.printCertificate = function() {
+            const content = document.getElementById('certificate-print-area').innerHTML; const origin = document.body.innerHTML;
+            document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; min-height:100vh;"><div style="width:100%; max-width:600px; border:8px double #d97706; padding:40px; text-align:center;">${content}</div></div>`;
+            window.print(); document.body.innerHTML = origin; window.location.reload();
+        };
+    </script>
+</body>
+</html>
