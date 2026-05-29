@@ -47,7 +47,7 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 선생님의 파이어베이스 정보를 이미 안전하게 심어두었습니다! 😊
+        // 선생님의 파이어베이스 정보 연동 완료! 😊
         const myFirebaseConfig = {
             apiKey: "AIzaSyCS8kWxKMV9qk06wxeEaYnNa9FK652CDsU",
             authDomain: "sahagu-69868.firebaseapp.com",
@@ -667,7 +667,7 @@
                 desc: `<p><strong>다대포해수욕장</strong>은 부드럽고 끝없는 은빛 모래사장과 함께 저녁 노을이 가장 찬란한 바다예요.</p><p>밀물과 썰물 때 넓은 갯벌 생태 체험장이 열려 게와 조개 관찰이 가능해요.</p><p>특히 여름과 가을 저녁이 되면 세계에서 제일 큰 거대한 물줄기가 멋진 음악에 맞추어 오색 조명 빛을 뿜어대며 춤을 추는 <strong>꿈의 낙조분수</strong>가 펼쳐져 환상적인 볼거리를 안겨준답니다.</p>`,
                 colorHex: "#0ea5e9",
                 illustrations: `<rect width="100%" height="100%" fill="#f0f9ff"/><text x="50%" y="45%" font-size="50" text-anchor="middle">⛲</text><text x="50%" y="75%" font-size="14" fill="#0369a1" font-weight="bold" text-anchor="middle">음악에 맞춰 춤추는 거대한 낙조분수</text>`,
-                quiz: { question: "다대포에서 음악และ 아름다운 LED 조명에 맞춰 엄청난 높이의 물줄기가 뿜어 나오는 유명한 구경거리는 무엇일까요?", options: [{ text: "얼음 썰매장 ❄️", correct: false }, { text: "워터 슬라이드 🏊", correct: false }, { text: "꿈의 낙조분수 ⛲", correct: true }] }
+                quiz: { question: "다대포에서 음악과 아름다운 LED 조명에 맞춰 엄청난 높이의 물줄기가 뿜어 나오는 유명한 구경거리는 무엇일까요?", options: [{ text: "얼음 썰매장 ❄️", correct: false }, { text: "워터 슬라이드 🏊", correct: false }, { text: "꿈의 낙조분수 ⛲", correct: true }] }
             },
             {
                 id: 3, name: "아미산 전망대", emoji: "🔭", badge: "코스 4", color: "from-amber-500 to-yellow-600",
@@ -721,4 +721,285 @@
                 state.allStudentsList = students;
                 const cloud = students.find(s => s.uid === state.currentUserId);
                 if (cloud) {
-                    state.studentInfo = { school: cloud.school||"", classGrade: cloud.classGrade||"", name: cloud.name||"", stamps: cloud.stamps||
+                    state.studentInfo = { school: cloud.school||"", classGrade: cloud.classGrade||"", name: cloud.name||"", stamps: cloud.stamps||[false,false,false,false,false], score: cloud.score||0, certIssued: cloud.certIssued||false, lastUpdated: cloud.lastUpdated||"" };
+                    window.showView('view-dashboard');
+                    window.updateHeaderUI(); window.updateProgressUI(); window.updatePinsUI();
+                } else {
+                    const savedName = localStorage.getItem('saha_student_name');
+                    if (savedName) {
+                        state.studentInfo = { school: localStorage.getItem('saha_student_school')||"", classGrade: localStorage.getItem('saha_student_class')||"", name: savedName, stamps: JSON.parse(localStorage.getItem('saha_student_stamps'))||[false,false,false,false,false], score: parseInt(localStorage.getItem('saha_student_score'))||0, certIssued: localStorage.getItem('saha_student_cert')==='true', lastUpdated: "" };
+                        window.saveMyDataToCloud();
+                    } else { window.showView('view-onboarding'); }
+                }
+                window.renderLeaderboard(); window.renderLmsTable();
+            });
+        };
+
+        window.saveMyDataToCloud = function() {
+            if (!state.currentUserId) return;
+            state.studentInfo.lastUpdated = new Date().toLocaleString();
+            localStorage.setItem('saha_student_school', state.studentInfo.school);
+            localStorage.setItem('saha_student_class', state.studentInfo.classGrade);
+            localStorage.setItem('saha_student_name', state.studentInfo.name);
+            localStorage.setItem('saha_student_stamps', JSON.stringify(state.studentInfo.stamps));
+            localStorage.setItem('saha_student_score', state.studentInfo.score);
+            localStorage.setItem('saha_student_cert', state.studentInfo.certIssued);
+            window.dbService.saveStudentProgress(state.currentUserId, state.studentInfo);
+        };
+
+        window.showView = function(viewId) {
+            document.getElementById('view-onboarding').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+        };
+
+        window.handleRegister = function(event) {
+            event.preventDefault();
+            const school = document.getElementById('reg-school').value.trim();
+            const classGrade = document.getElementById('reg-class').value;
+            const name = document.getElementById('reg-name').value.trim();
+            state.studentInfo = { school, classGrade, name, stamps: [false,false,false,false,false], score: 0, certIssued: false, lastUpdated: new Date().toLocaleString() };
+            window.saveMyDataToCloud();
+            window.showCustomAlert("🎒 탐험 등록 완료!", `${name} 탐험가님 반가워요! 지도의 핀을 눌러 출발해 보세요!`, "success");
+        };
+
+        window.updateHeaderUI = function() {
+            document.getElementById('header-user-name').textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade} ${state.studentInfo.name}`;
+            document.getElementById('header-user-stats').textContent = `스탬프 ${state.studentInfo.stamps.filter(Boolean).length}개 • ${state.studentInfo.score}점`;
+        };
+
+        window.updateProgressUI = function() {
+            const count = state.studentInfo.stamps.filter(Boolean).length;
+            document.getElementById('progress-percent').textContent = `진행률 ${count*20}%`;
+            document.getElementById('progress-stamps').textContent = `스탬프 ${count}/5개`;
+            document.getElementById('progress-bar').style.width = `${count*20}%`;
+            const btn = document.getElementById('btn-show-certificate');
+            if(count === 5) {
+                btn.disabled = false;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 cursor-pointer shadow-md";
+            } else {
+                btn.disabled = true;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-slate-300 cursor-not-allowed";
+            }
+        };
+
+        window.updatePinsUI = function() {
+            state.studentInfo.stamps.forEach((st, i) => {
+                const badge = document.getElementById(`pin-stamp-${i}`);
+                if(badge) { st ? badge.classList.remove('hidden') : badge.classList.add('hidden'); }
+            });
+        };
+
+        window.renderLeaderboard = function() {
+            const container = document.getElementById('leaderboard-list');
+            if (!container) return;
+            const sorted = [...state.allStudentsList].sort((a,b) => (b.score||0) - (a.score||0));
+            if(sorted.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">아직 기록이 없어요!</div>`;
+                return;
+            }
+            container.innerHTML = sorted.slice(0, 10).map((st, i) => {
+                const isMe = st.uid === state.currentUserId;
+                return `
+                    <div class="flex items-center justify-between p-2.5 rounded-xl border ${isMe ? 'bg-sky-50 border-sky-300' : 'bg-white border-slate-100'} text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-400 w-4">${i+1}</span>
+                            <div class="text-left">
+                                <p class="font-bold text-slate-700">${st.name||"탐험가"} ${isMe?'(나)':''}</p>
+                                <p class="text-[10px] text-slate-400">${st.school||""} ${st.classGrade||""}</p>
+                            </div>
+                        </div>
+                        <p class="font-jua text-sky-600 font-bold">${st.score||0}점</p>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.openSpot = function(idx) {
+            state.currentSpotIndex = idx;
+            const spot = SPOTS_DB[idx];
+            document.getElementById('modal-spot-badge').textContent = spot.badge;
+            document.getElementById('modal-spot-title').textContent = `${spot.name} 탐험`;
+            document.getElementById('modal-spot-emoji').textContent = spot.emoji;
+            document.getElementById('modal-spot-desc').innerHTML = spot.desc;
+            document.getElementById('modal-spot-header').className = `p-6 text-white flex justify-between items-center bg-gradient-to-r ${spot.color}`;
+            document.getElementById('spot-illustration').innerHTML = `<svg viewBox="0 0 300 150" class="w-full h-full">${spot.illustrations}</svg>`;
+            document.getElementById('spot-content-section').classList.remove('hidden');
+            document.getElementById('spot-quiz-section').classList.add('hidden');
+            window.stopTTS();
+            const modal = document.getElementById('modal-spot');
+            modal.classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-spot-card').classList.remove('scale-95'), 10);
+        };
+
+        window.closeSpotModal = function() {
+            window.stopTTS();
+            document.getElementById('modal-spot-card').classList.add('scale-95');
+            setTimeout(() => document.getElementById('modal-spot').classList.add('hidden'), 150);
+        };
+
+        window.toggleTTS = function() { state.isSpeaking ? window.stopTTS() : window.startTTS(); };
+        window.startTTS = function() {
+            if (!('speechSynthesis' in window)) return;
+            window.stopTTS();
+            const div = document.createElement('div'); div.innerHTML = SPOTS_DB[state.currentSpotIndex].desc;
+            state.speechUtterance = new SpeechSynthesisUtterance(div.innerText);
+            state.speechUtterance.lang = 'ko-KR';
+            state.speechUtterance.onstart = () => {
+                state.isSpeaking = true;
+                document.getElementById('tts-icon').className = "fa-solid fa-square-stop";
+                document.getElementById('tts-wave-container').classList.remove('hidden');
+            };
+            state.speechUtterance.onend = () => window.stopTTS();
+            window.speechSynthesis.speak(state.speechUtterance);
+        };
+        window.stopTTS = function() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            state.isSpeaking = false;
+            document.getElementById('tts-icon').className = "fa-solid fa-volume-high";
+            const wave = document.getElementById('tts-wave-container');
+            if(wave) wave.classList.add('hidden');
+        };
+
+        window.startQuiz = function() {
+            if (state.studentInfo.stamps[state.currentSpotIndex]) {
+                window.showCustomAlert("💮 완료 코스", "이미 골든벨을 울려 스탬프를 가방에 넣은 명소입니다!", "success");
+                return;
+            }
+            const quiz = SPOTS_DB[state.currentSpotIndex].quiz;
+            document.getElementById('quiz-question').textContent = quiz.question;
+            document.getElementById('quiz-options-container').innerHTML = quiz.options.map((opt) => `
+                <button onclick="window.selectQuizAnswer(${opt.correct})" class="w-full p-3.5 text-left border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 rounded-xl font-semibold text-slate-700 transition">
+                    ${opt.text}
+                </button>
+            `).join('');
+            document.getElementById('spot-content-section').classList.add('hidden');
+            document.getElementById('spot-quiz-section').classList.remove('hidden');
+        };
+
+        window.selectQuizAnswer = function(isCorrect) {
+            if (isCorrect) {
+                state.studentInfo.stamps[state.currentSpotIndex] = true;
+                state.studentInfo.score += 20;
+                window.saveMyDataToCloud();
+                confetti({ particleCount: 80, spread: 60 });
+                window.showCustomAlert("🔔 정답입니다!", "딩동댕! <strong>20점</strong>을 얻고 멋진 상징 스탬프를 획득했습니다!", "success", () => window.closeSpotModal());
+            } else {
+                window.showCustomAlert("😢 아쉬워요", "틀렸습니다! 해설 내용을 기억하여 다시 한번 도전해 보세요!", "error");
+            }
+        };
+
+        window.openMatchingGame = function() {
+            let pool = [...GAME_CARDS_RAW, ...GAME_CARDS_RAW].sort(() => Math.random() - 0.5);
+            state.game = { cards: pool.map(emoji => ({ emoji, isFlipped: false, isMatched: false })), flippedIndices: [], matchedPairs: 0, moves: 0, isLock: false };
+            window.renderGameGrid();
+            document.getElementById('modal-game').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-game-card').classList.remove('scale-95'), 10);
+        };
+        window.closeGameModal = function() {
+            document.getElementById('modal-game-card').classList.add('scale-95');
+            setTimeout(() => document.getElementById('modal-game').classList.add('hidden'), 150);
+        };
+        window.renderGameGrid = function() {
+            document.getElementById('game-moves').textContent = `시도 횟수: ${state.game.moves}회`;
+            document.getElementById('game-matches').textContent = `맞춘 카드: ${state.game.matchedPairs}/6 짝`;
+            document.getElementById('game-grid').innerHTML = state.game.cards.map((card, idx) => {
+                const show = card.isFlipped || card.isMatched;
+                return `
+                    <button onclick="window.handleCardClick(${idx})" class="aspect-square rounded-xl flex items-center justify-center text-2xl border ${show ? 'bg-white border-amber-400' : 'bg-gradient-to-br from-amber-400 to-orange-400 text-white font-bold'}">
+                        ${show ? card.emoji : '?'}
+                    </button>
+                `;
+            }).join('');
+        };
+        window.handleCardClick = function(idx) {
+            const g = state.game; if (g.isLock || g.cards[idx].isFlipped || g.cards[idx].isMatched) return;
+            g.cards[idx].isFlipped = true; g.flippedIndices.push(idx); window.renderGameGrid();
+            if (g.flippedIndices.length === 2) {
+                g.moves++; g.isLock = true;
+                const [i1, i2] = g.flippedIndices;
+                if (g.cards[i1].emoji === g.cards[i2].emoji) {
+                    g.cards[i1].isMatched = g.cards[i2].isMatched = true; g.matchedPairs++; g.flippedIndices = []; g.isLock = false; window.renderGameGrid();
+                    if (g.matchedPairs === 6) {
+                        state.studentInfo.score += 10; window.saveMyDataToCloud();
+                        window.showCustomAlert("🏆 대단해요!", "카드 짝을 모두 맞춰 보너스 <strong>10점</strong>을 획득했습니다!", "success", () => window.closeGameModal());
+                    }
+                } else {
+                    setTimeout(() => { g.cards[i1].isFlipped = g.cards[i2].isFlipped = false; g.flippedIndices = []; g.isLock = false; window.renderGameGrid(); }, 1000);
+                }
+            }
+        };
+
+        window.showCustomAlert = function(title, msg, type="info", cb=null) {
+            document.getElementById('alert-title').innerHTML = title;
+            document.getElementById('alert-message').innerHTML = msg;
+            const wrap = document.getElementById('alert-icon-wrapper');
+            wrap.innerHTML = type==="success"?"🎉":type==="error"?"⚠️":"📢";
+            wrap.className = `w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 ${type==='success'?'bg-emerald-50 text-emerald-500':type==='error'?'bg-rose-50 text-rose-500':'bg-sky-50 text-sky-500'}`;
+            const container = document.getElementById('alert-action-buttons');
+            container.innerHTML = `<button id="alert-btn-ok" class="px-6 py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md">확인</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
+            const handler = () => { modal.classList.add('hidden'); if(cb) cb(); document.getElementById('alert-btn-ok').removeEventListener('click', handler); };
+            document.getElementById('alert-btn-ok').addEventListener('click', handler);
+        };
+
+        window.openLmsLogin = function() { document.getElementById('lms-password-input').value = ""; document.getElementById('modal-lms-login').classList.remove('hidden'); };
+        window.closeLmsLogin = function() { document.getElementById('modal-lms-login').classList.add('hidden'); };
+        window.verifyLmsPassword = function() {
+            if (document.getElementById('lms-password-input').value === "3333") { window.closeLmsLogin(); window.openLmsDashboard(); }
+            else { window.showCustomAlert("🔐 오류", "선생님 비밀번호가 다릅니다.", "error"); }
+        };
+        window.openLmsDashboard = function() { window.renderLmsTable(); document.getElementById('modal-lms-dashboard').classList.remove('hidden'); };
+        window.closeLmsDashboard = function() { document.getElementById('modal-lms-dashboard').classList.add('hidden'); };
+
+        window.renderLmsTable = function() {
+            const filter = document.getElementById('lms-filter-class').value;
+            let list = [...state.allStudentsList];
+            if (filter !== "전체") list = list.filter(s => s.classGrade === filter);
+            
+            document.getElementById('lms-stat-total').textContent = `${list.length}명`;
+            const avg = list.length > 0 ? Math.round(list.reduce((acc, s) => acc + (s.score||0), 0) / list.length) : 0;
+            document.getElementById('lms-stat-avg-score').textContent = `${avg}점`;
+            
+            document.getElementById('lms-student-tbody').innerHTML = list.map(s => {
+                const count = (s.stamps||[]).filter(Boolean).length;
+                return `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100 text-xs">
+                        <td class="p-3">${s.school||""}</td><td class="p-3">${s.classGrade||""}</td><td class="p-3 font-bold">${s.name||""}</td>
+                        <td class="p-3 text-center text-sky-600 font-bold">${s.score||0}점</td><td class="p-3 text-center">🏵️ ${count}/5개</td>
+                        <td class="p-3 text-center">${count===5?'👑 수료완료':'탐험중'}</td>
+                        <td class="p-3 text-center"><button onclick="window.lmsReset('${s.uid}', '${s.name}')" class="px-2 py-1 text-rose-600 border border-rose-100 rounded bg-rose-50 font-bold">리셋</button></td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        window.lmsReset = function(uid, name) {
+            document.getElementById('alert-title').innerHTML = "⚙️ 상태 리셋";
+            document.getElementById('alert-message').innerHTML = `<strong>${name}</strong> 학생의 기록을 정말 초기화할까요?`;
+            const wrap = document.getElementById('alert-icon-wrapper'); wrap.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-rose-50 text-rose-500"; wrap.innerHTML = "♻️";
+            const container = document.getElementById('alert-action-buttons');
+            container.innerHTML = `<button id="alert-btn-cnl" class="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-xl">취소</button><button id="alert-btn-ok" class="px-4 py-2 bg-rose-500 text-white font-bold rounded-xl">리셋</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
+            
+            const close = () => modal.classList.add('hidden');
+            document.getElementById('alert-btn-cnl').onclick = close;
+            document.getElementById('alert-btn-ok').onclick = () => { close(); window.dbService.deleteStudent(uid).then(() => window.renderLmsTable()); };
+        };
+
+        window.openCertificate = function() {
+            document.getElementById('cert-name').textContent = state.studentInfo.name;
+            document.getElementById('cert-school').textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade}`;
+            const t = new Date(); document.getElementById('cert-date').textContent = `${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;
+            state.studentInfo.certIssued = true; window.saveMyDataToCloud();
+            document.getElementById('modal-certificate').classList.remove('hidden');
+        };
+        window.closeCertificate = function() { document.getElementById('modal-certificate').classList.add('hidden'); };
+        window.printCertificate = function() {
+            const content = document.getElementById('certificate-print-area').innerHTML; const origin = document.body.innerHTML;
+            document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; min-height:100vh;"><div style="width:100%; max-width:600px; border:8px double #d97706; padding:40px; text-align:center;">${content}</div></div>`;
+            window.print(); document.body.innerHTML = origin; window.location.reload();
+        };
+    </script>
+</body>
+</html>
