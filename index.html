@@ -47,7 +47,7 @@
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 선생님의 파이어베이스 정보 연동 완벽 적용! 😊
+        // 선생님의 파이어베이스 정보 연동 완료! 😊
         const myFirebaseConfig = {
             apiKey: "AIzaSyCS8kWxKMV9qk06wxeEaYnNa9FK652CDsU",
             authDomain: "sahagu-69868.firebaseapp.com",
@@ -171,28 +171,7 @@
             }
         };
 
-        window.initAppUI = function() {
-            window.dbService.onAuthChange((user) => {
-                if (user) {
-                    state.currentUserId = user.uid;
-                    window.subscribeToDatabase();
-                }
-            });
-            window.dbService.signIn().catch(() => {
-                state.currentUserId = 'offline_' + Math.random().toString(36).substr(2, 9);
-                window.subscribeToDatabase();
-            });
-            const badge = document.getElementById('storage-mode-badge');
-            if (badge) {
-                if (window.dbService.isCloudMode()) {
-                    badge.textContent = "클라우드 온라인 실시간 동기화 ON";
-                    badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-emerald-500 font-bold";
-                } else {
-                    badge.textContent = "로컬 저장소 전용 모드";
-                    badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-amber-500 font-bold";
-                }
-            }
-        };
+        window.initAppUI();
     </script>
 
     <div id="app-root" class="flex-grow flex flex-col relative overflow-x-hidden">
@@ -681,7 +660,7 @@
                 desc: `<p><strong>감천문화마을</strong>은 알록달록 알록색 도화지처럼 아름다운 산비탈 마을이에요.</p><p>아주 먼 옛날 한국전쟁 당시 피란민들이 척박한 비탈길에 힘을 모아 옹기종기 계단식 집들을 지으며 소중한 삶의 터전을 일구어 냈습니다.</p><p>지금은 예술가들의 조각상과 멋진 벽화, 그리고 마을 골목길 위를 바라보며 사막여우와 함께 여행을 기다리는 <strong>어린왕자</strong> 조각상이 세계 수많은 여행객들을 반갑게 맞이하고 있답니다.</p>`,
                 colorHex: "#f43f5e",
                 illustrations: `<rect width="100%" height="100%" fill="#fff1f2"/><text x="50%" y="45%" font-size="50" text-anchor="middle">👑</text><text x="50%" y="75%" font-size="14" fill="#be123c" font-weight="bold" text-anchor="middle">어린왕자가 바라보는 알록달록 언덕마을</text>`,
-                quiz: { question: "감천문화마을 산비탈 길목 난간에서 사막여우와 나란히 앉아 마을을 내려다보는 동화 속 주인공은 누구일까요?", options: [{ text: "어린왕자 👑", correct: true }, { text: "신데렐라 👑", correct: false }, { text: "피노키오 🤥", correct: false }] }
+                quiz: { question: "감천문화마을 산비탈 길목 난간에서 사막여우와 나란히 앉아 마을을 내려다보는 동화 속 주인공은 누구일까요?", options: [{ text: "어린왕자 👑", correct: true }, { text: "신데렐라 👠", correct: false }, { text: "피노키오 🤥", correct: false }] }
             },
             {
                 id: 2, name: "다대포해수욕장", emoji: "🌅", badge: "코스 3", color: "from-sky-500 to-blue-600",
@@ -713,6 +692,27 @@
             studentInfo: { school: "", classGrade: "", name: "", stamps: [false, false, false, false, false], score: 0, certIssued: false, lastUpdated: "" },
             allStudentsList: [], currentSpotIndex: null, speechUtterance: null, isSpeaking: false,
             game: { cards: [], flippedIndices: [], matchedPairs: 0, moves: 0, isLock: false }
+        };
+
+        window.initAppUI = function() {
+            window.dbService.onAuthChange((user) => {
+                if (user) {
+                    state.currentUserId = user.uid;
+                    window.subscribeToDatabase();
+                }
+            });
+            window.dbService.signIn().catch(() => {
+                state.currentUserId = 'offline_' + Math.random().toString(36).substr(2, 9);
+                window.subscribeToDatabase();
+            });
+            const badge = document.getElementById('storage-mode-badge');
+            if (window.dbService.isCloudMode()) {
+                badge.textContent = "클라우드 온라인 실시간 동기화 ON";
+                badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-emerald-500 font-bold";
+            } else {
+                badge.textContent = "로컬 저장소 전용 모드";
+                badge.className = "px-1.5 py-0.5 rounded text-[10px] text-white bg-amber-500 font-bold";
+            }
         };
 
         window.subscribeToDatabase = function() {
@@ -748,13 +748,9 @@
         };
 
         window.showView = function(viewId) {
-            const onboarding = document.getElementById('view-onboarding');
-            const dashboard = document.getElementById('view-dashboard');
-            if (onboarding && dashboard) {
-                onboarding.classList.add('hidden');
-                dashboard.classList.add('hidden');
-                document.getElementById(viewId).classList.remove('hidden');
-            }
+            document.getElementById('view-onboarding').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
         };
 
         window.handleRegister = function(event) {
@@ -768,33 +764,22 @@
         };
 
         window.updateHeaderUI = function() {
-            const nameEl = document.getElementById('header-user-name');
-            const statsEl = document.getElementById('header-user-stats');
-            if (nameEl && statsEl) {
-                nameEl.textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade} ${state.studentInfo.name}`;
-                statsEl.textContent = `스탬프 ${state.studentInfo.stamps.filter(Boolean).length}개 • ${state.studentInfo.score}점`;
-            }
+            document.getElementById('header-user-name').textContent = `${state.studentInfo.school} ${state.studentInfo.classGrade} ${state.studentInfo.name}`;
+            document.getElementById('header-user-stats').textContent = `스탬프 ${state.studentInfo.stamps.filter(Boolean).length}개 • ${state.studentInfo.score}점`;
         };
 
         window.updateProgressUI = function() {
             const count = state.studentInfo.stamps.filter(Boolean).length;
-            const pct = document.getElementById('progress-percent');
-            const stp = document.getElementById('progress-stamps');
-            const bar = document.getElementById('progress-bar');
-            if (pct && stp && bar) {
-                pct.textContent = `진행률 ${count*20}%`;
-                stp.textContent = `스탬프 ${count}/5개`;
-                bar.style.width = `${count*20}%`;
-            }
+            document.getElementById('progress-percent').textContent = `진행률 ${count*20}%`;
+            document.getElementById('progress-stamps').textContent = `스탬프 ${count}/5개`;
+            document.getElementById('progress-bar').style.width = `${count*20}%`;
             const btn = document.getElementById('btn-show-certificate');
-            if(btn) {
-                if(count === 5) {
-                    btn.disabled = false;
-                    btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 cursor-pointer shadow-md";
-                } else {
-                    btn.disabled = true;
-                    btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-slate-300 cursor-not-allowed";
-                }
+            if(count === 5) {
+                btn.disabled = false;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 cursor-pointer shadow-md";
+            } else {
+                btn.disabled = true;
+                btn.className = "px-5 py-3 rounded-xl font-jua text-lg text-white bg-slate-300 cursor-not-allowed";
             }
         };
 
@@ -949,23 +934,17 @@
             document.getElementById('alert-title').innerHTML = title;
             document.getElementById('alert-message').innerHTML = msg;
             const wrap = document.getElementById('alert-icon-wrapper');
-            if (wrap) {
-                wrap.innerHTML = type==="success"?"🎉":type==="error"?"⚠️":"📢";
-                wrap.className = `w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 ${type==='success'?'bg-emerald-50 text-emerald-500':type==='error'?'bg-rose-50 text-rose-500':'bg-sky-50 text-sky-500'}`;
-            }
+            wrap.innerHTML = type==="success"?"🎉":type==="error"?"⚠️":"📢";
+            wrap.className = `w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 ${type==='success'?'bg-emerald-50 text-emerald-500':type==='error'?'bg-rose-50 text-rose-500':'bg-sky-50 text-sky-500'}`;
             const container = document.getElementById('alert-action-buttons');
-            if (container) container.innerHTML = `<button id="alert-btn-ok" class="px-6 py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md">확인</button>`;
-            const modal = document.getElementById('modal-alert'); 
-            if (modal) modal.classList.remove('hidden');
-            const btnOk = document.getElementById('alert-btn-ok');
-            if (btnOk) {
-                const handler = () => { if(modal) modal.classList.add('hidden'); if(cb) cb(); btnOk.removeEventListener('click', handler); };
-                btnOk.addEventListener('click', handler);
-            }
+            container.innerHTML = `<button id="alert-btn-ok" class="px-6 py-2 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md">확인</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
+            const handler = () => { modal.classList.add('hidden'); if(cb) cb(); document.getElementById('alert-btn-ok').removeEventListener('click', handler); };
+            document.getElementById('alert-btn-ok').addEventListener('click', handler);
         };
 
         window.openLmsLogin = function() { document.getElementById('lms-password-input').value = ""; document.getElementById('modal-lms-login').classList.remove('hidden'); };
-        window.closeLmsLogin = function() { document.getElementById('modal-lms-login').className = "hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"; };
+        window.closeLmsLogin = function() { document.getElementById('modal-lms-login').classList.add('hidden'); };
         window.verifyLmsPassword = function() {
             if (document.getElementById('lms-password-input').value === "3333") { window.closeLmsLogin(); window.openLmsDashboard(); }
             else { window.showCustomAlert("🔐 오류", "선생님 비밀번호가 다릅니다.", "error"); }
@@ -998,14 +977,14 @@
         window.lmsReset = function(uid, name) {
             document.getElementById('alert-title').innerHTML = "⚙️ 상태 리셋";
             document.getElementById('alert-message').innerHTML = `<strong>${name}</strong> 학생의 기록을 정말 초기화할까요?`;
-            const wrap = document.getElementById('alert-icon-wrapper'); if(wrap){ wrap.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-rose-50 text-rose-500"; wrap.innerHTML = "♻️"; }
+            const wrap = document.getElementById('alert-icon-wrapper'); wrap.className = "w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-rose-50 text-rose-500"; wrap.innerHTML = "♻️";
             const container = document.getElementById('alert-action-buttons');
-            if(container) container.innerHTML = `<button id="alert-btn-cnl" class="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-xl">취소</button><button id="alert-btn-ok" class="px-4 py-2 bg-rose-500 text-white font-bold rounded-xl">리셋</button>`;
-            const modal = document.getElementById('modal-alert'); if(modal) modal.classList.remove('hidden');
+            container.innerHTML = `<button id="alert-btn-cnl" class="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-xl">취소</button><button id="alert-btn-ok" class="px-4 py-2 bg-rose-500 text-white font-bold rounded-xl">리셋</button>`;
+            const modal = document.getElementById('modal-alert'); modal.classList.remove('hidden');
             
-            const close = () => { if(modal) modal.classList.add('hidden'); };
-            const cnlBtn = document.getElementById('alert-btn-cnl'); if(cnlBtn) cnlBtn.onclick = close;
-            const okBtn = document.getElementById('alert-btn-ok'); if(okBtn) okBtn.onclick = () => { close(); window.dbService.deleteStudent(uid).then(() => window.renderLmsTable()); };
+            const close = () => modal.classList.add('hidden');
+            document.getElementById('alert-btn-cnl').onclick = close;
+            document.getElementById('alert-btn-ok').onclick = () => { close(); window.dbService.deleteStudent(uid).then(() => window.renderLmsTable()); };
         };
 
         window.openCertificate = function() {
